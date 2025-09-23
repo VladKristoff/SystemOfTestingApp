@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from pages.test_page import TestPage
 from pages.result_page import ResultPage
+from pages.list_page import ListPage
 
 class MainMenu():
     def __init__(self, parent, app):
@@ -71,9 +72,9 @@ class MainMenu():
 
         # Кнопка "Начать тест"
         self.StartBtn = ttk.Button(self.frame_for_buttons,
-                                   text='Начать тест',
+                                   text="Список тестов",
                                    style='StyleGreen.TButton',
-                                   command=self.start_test)
+                                   command=self.start_list_page)
         self.StartBtn.grid(row=0, column=0, ipadx=20, ipady=9, padx=15)
 
         # Кнопка "Загрузить тест"
@@ -89,20 +90,10 @@ class MainMenu():
                                      command=self.start_results)
         self.ResultsBtn.grid(row=0, column=2, ipadx=20, ipady=9, padx=15)
 
-        # Надпись "доступно 10 вопросов"
-        self.lable_avaiable = ttk.Label(self.menu_frame,
-                                        text="Доступно 10 вопросов",
-                                        font=('Arial', 12),
-                                        foreground='#4d4d4d',
-                                        style='Label.TLabel')
-        self.lable_avaiable.pack(anchor='s')
-
-    # Функция перехода к странице теста
-    def start_test(self):
+    def start_list_page(self):
         self.user_name = self.entry_name.get()
         if self.user_name:
-            # Меняю цвет теста с ошибкой на цвет фона, на случай, если цвет менялся не красный
-            self.app.show_page(TestPage)
+            self.app.show_page(ListPage)
         else:
             # Меняется цвет текста с ошибкой на красный, если не ввёдено имя
             self.label_error.configure(foreground='red')

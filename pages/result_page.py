@@ -10,7 +10,7 @@ class ResultPage:
 
     def create_widgets(self):
         # Фрейм для верхних виджетов
-        self.top_frame = Frame(self.parent, background='#f0f0f0')
+        self.top_frame = Frame(self.parent, background='white')
         self.top_frame.pack(fill=X)
 
         # Надпись "Результаты ваших тестирований"
@@ -19,35 +19,33 @@ class ResultPage:
                                            font=('Arial', 14, 'bold'),
                                            foreground='#303030',
                                            style='Label.TLabel')
-        self.label_YourResults.pack(side='left', padx=10, pady=10)
+        self.label_YourResults.pack(side='left', padx=30, pady=10)
 
         # Фрейм для таблицы
         self.table_frame = Frame(self.parent,
-                                 background='#f0f0f0',
+                                 background='white',
                                  relief=SOLID,
                                  borderwidth=1)
-        self.table_frame.pack(fill='both', expand=TRUE, padx=50, pady=50)
+        self.table_frame.pack(fill='both', expand=TRUE, padx=30, pady=30)
 
         # Кнопка "Назад", переход на главное меню
         self.BackBtn = ttk.Button(self.parent,
                                   text='Назад',
                                   style='StyleGray.TButton',
                                   command=self.back_button)
-        self.BackBtn.pack(side='left', anchor='s', padx=10, pady=10, ipady=5)
+        self.BackBtn.pack(side='left', anchor='s', padx=30, pady=10, ipady=5)
 
         # Кнопка "Удалить"
         self.DelBtn = ttk.Button(self.parent,
                                   text='Удалить',
-                                  style='StyleRed.TButton',
-                                  )
-        self.DelBtn.pack(side='left', anchor='s', padx=10, pady=10, ipadx=5, ipady=5)
+                                  style='StyleRed.TButton')
+        self.DelBtn.pack(side='right', anchor='s', padx=30, pady=10, ipadx=5, ipady=5)
 
         # Кнопка "Очистить всё"
         self.ClearBtn = ttk.Button(self.parent,
                                   text='Очистить всё',
-                                  style='StyleYellow.TButton',
-                                  )
-        self.ClearBtn.pack(side='left', anchor='s', padx=10, pady=10, ipadx=5, ipady=5)
+                                  style='StyleYellow.TButton')
+        self.ClearBtn.pack(side='right', anchor='s', padx=10, pady=10, ipadx=5, ipady=5)
 
     # Функция возвращения на экран главного меню
     def back_button(self):
