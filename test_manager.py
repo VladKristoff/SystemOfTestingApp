@@ -1,4 +1,4 @@
-from tests.tests import test1, test2
+from tests.tests1 import test1, test2
 
 
 class TestManager:
@@ -9,7 +9,7 @@ class TestManager:
     def load_tests(self):
         """Загружает тесты"""
         self.tests["Математический тест"] = test1
-        self.tests["Математический тест 2"] = test2
+        self.tests["test"] = test2
         print(self.tests)
 
     def get_available_tests(self):

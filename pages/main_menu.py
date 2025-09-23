@@ -1,15 +1,13 @@
 from tkinter import *
 from tkinter import ttk
 from pages.test_page import TestPage
-from pages.result_page import ResultPage
+from pages.table_page import TablePage
 from pages.list_page import ListPage
 
 class MainMenu():
     def __init__(self, parent, app):
         self.parent = parent
         self.app = app
-
-        self.luna = PhotoImage(file='media/luna.png')
 
         self.create_widgets()
 
@@ -21,10 +19,9 @@ class MainMenu():
         # Заголовок слева-сверху
         self.label_title = ttk.Label(self.parent,
                                      text='Система тестирования знаний',
-                                     font=('Arial', 14, 'bold'),
-                                     foreground='#303030',
+                                     font=('Arial', 17, 'bold'),
                                      style='Label.TLabel',)
-        self.label_title.pack(anchor='sw', padx=10, pady=10)
+        self.label_title.pack(anchor='sw', padx=20, pady=20)
 
         # Фрейм для основного меню
         self.menu_frame = Frame(self.parent,
@@ -99,7 +96,7 @@ class MainMenu():
             self.label_error.configure(foreground='red')
 
     def start_results(self):
-        self.app.show_page(ResultPage)
+        self.app.show_page(TablePage)
 
     # Очистка виджетов при закрытии страницы
     def destroy(self):

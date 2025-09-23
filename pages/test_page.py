@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
-from tests.tests import test1
+from tests.tests1 import test1
+from pages.result_page import ResultPage
 
 
 class TestPage:
@@ -29,7 +30,7 @@ class TestPage:
 
         # Номер вопроса
         self.label_num = ttk.Label(self.top_frame,
-                                   text=f'Вопрос {self.count_questions} из 10',
+                                   text=f'Вопрос {self.count_questions} из {self.total_questions}',
                                    font=('Arial', 16, 'bold'),
                                    style='Label.TLabel')
         self.label_num.pack(side='left', anchor='w', padx=20)
@@ -45,7 +46,7 @@ class TestPage:
         # Фрейм для тестов
         self.test_frame = Frame(self.parent,
                                 relief=SOLID,
-                                borderwidth=1,
+                                borderwidth=2,
                                 background='white')
         self.test_frame.pack(fill=BOTH, expand=True, padx=20, pady=20)
 
@@ -135,6 +136,7 @@ class TestPage:
     # Функция завершения теста
     def finish_test(self):
         self.timer_running = False
+        self.app.show_page(ResultPage)
 
     # Функция для возврата в главное меню
     def back_button(self):
