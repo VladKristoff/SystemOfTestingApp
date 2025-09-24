@@ -142,10 +142,13 @@ class TestPage:
         self.time_complete = self.total_seconds - self.seconds
         correct_answers = self.count_true_answers()
         total_questions = self.total_questions
-        self.app.show_page(ResultPage, self.time_complete,
+        self.app.show_page(ResultPage, 
+                           time_complete=self.time_complete,
                            correct_answers=correct_answers,
                            total_questions=self.total_questions,
-                           user_name=self.user_name)
+                           user_name=self.user_name,
+                           test_name=self.test_name,
+                           user_answers=self.user_answers)
 
     # Функция для возврата в главное меню
     def back_button(self):
