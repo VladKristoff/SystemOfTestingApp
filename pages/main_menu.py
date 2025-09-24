@@ -4,10 +4,12 @@ from pages.test_page import TestPage
 from pages.table_page import TablePage
 from pages.list_page import ListPage
 
+
 class MainMenu():
     def __init__(self, parent, app):
         self.parent = parent
         self.app = app
+        self.user_name = None
 
         self.create_widgets()
 
@@ -20,7 +22,7 @@ class MainMenu():
         self.label_title = ttk.Label(self.parent,
                                      text='Система тестирования знаний',
                                      font=('Arial', 17, 'bold'),
-                                     style='Label.TLabel',)
+                                     style='Label.TLabel', )
         self.label_title.pack(anchor='sw', padx=20, pady=20)
 
         # Фрейм для основного меню
@@ -56,7 +58,7 @@ class MainMenu():
         # Поле ввода текста для имени
         self.entry_name = ttk.Entry(self.menu_frame,
                                     width=30,
-                                    font=('Arial', 11),)
+                                    font=('Arial', 11), )
         self.entry_name.pack(anchor='s')
 
         # Фрейм для кнопок
@@ -90,7 +92,7 @@ class MainMenu():
     def start_list_page(self):
         self.user_name = self.entry_name.get()
         if self.user_name:
-            self.app.show_page(ListPage)
+            self.app.show_page(ListPage, user_name=self.user_name)
         else:
             # Меняется цвет текста с ошибкой на красный, если не ввёдено имя
             self.label_error.configure(foreground='red')

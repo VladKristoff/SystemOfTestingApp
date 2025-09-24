@@ -5,15 +5,18 @@ from pages.result_page import ResultPage
 
 
 class TestPage:
-    def __init__(self, parent, app, test_name=None):
+    def __init__(self, parent, app, test_name=None, user_name=None):
+        self.time_complete = 0
         self.parent = parent
         self.app = app
         self.test_name = test_name
         # Берём данные теста, если есть имя
         self.test_data = self.app.test_manager.get_tests(test_name) if test_name else None
+        self.user_name = user_name
 
         self.total_questions = len(self.test_data)
-        self.seconds = 120  # Сколько времени даётся на тест
+        self.total_seconds = 120  # Сколько времени даётся на тест
+        self.seconds = self.total_seconds  # Переменная для подсчёта времени
         self.count_questions = 1  # Переменная для подсчёта номера вопроса
         self.user_answers = []  # Для хранения ответов пользователя
 
@@ -91,10 +94,10 @@ class TestPage:
     def show_question(self):
         questions_key = f"question_{self.count_questions}"
         if questions_key in self.test_data:
-            questions_data = self.test_data[questions_key]
+            self.questions_data = self.test_data[questions_key]
 
             # Отображение вопроса
-            self.question_label.config(text=questions_data["question"])
+            self.question_label.config(text=self.questions_data["question"])
 
             # Очищаем варианты ответа
             for widget in self.answers_frame.winfo_children():
@@ -102,7 +105,7 @@ class TestPage:
             self.option_buttons = []
 
             # Создание кнопок для вариантов ответа
-            for i, option in enumerate(questions_data["options"]):
+            for i, option in enumerate(self.questions_data["options"]):
                 rb = ttk.Radiobutton(self.answers_frame,
                                      text=str(option),
                                      variable=self.select_option,
@@ -136,7 +139,13 @@ class TestPage:
     # Функция завершения теста
     def finish_test(self):
         self.timer_running = False
-        self.app.show_page(ResultPage)
+        self.time_complete = self.total_seconds - self.seconds
+        correct_answers = self.count_true_answers()
+        total_questions = self.total_questions
+        self.app.show_page(ResultPage, self.time_complete,
+                           correct_answers=correct_answers,
+                           total_questions=self.total_questions,
+                           user_name=self.user_name)
 
     # Функция для возврата в главное меню
     def back_button(self):
@@ -163,8 +172,23 @@ class TestPage:
         else:
             try:
                 self.label_timer.config(text='Время истекло')
+                self.time_complete = self.total_seconds - self.seconds
+                print(f"Прошедшее время: {self.time_complete} секунд")  # Для отладки
             except TclError:
                 return
+
+    def count_true_answers(self):
+        correct_count = 0
+
+        for i, user_answer in enumerate(self.user_answers):
+            question_key = f"question_{i + 1}"
+            if question_key in self.test_data:
+                correct_answer = self.test_data[question_key]["correct_answer"]
+
+                if user_answer == correct_answer:
+                    correct_count += 1
+
+        return correct_count
 
     # Очистка виджетов при закрытии страницы
     def destroy(self):

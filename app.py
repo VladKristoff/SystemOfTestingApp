@@ -41,7 +41,7 @@ class AppTest:
 
         # Зелёная кнопка
         self.style.configure('StyleGreen.TButton',
-                             font=('Calibri', 16, 'bold'),
+                             font=('Arial', 16, 'bold'),
                              background="#1DC200",
                              borderwidth=0,
                              foreground='white')
@@ -50,7 +50,7 @@ class AppTest:
 
         # Синяя кнопка
         self.style.configure('StyleBlue.TButton',
-                             font=('Calibri', 16, 'bold'),
+                             font=('Arial', 16, 'bold'),
                              background="#0099FF",
                              borderwidth=0,
                              foreground='white')
@@ -59,7 +59,7 @@ class AppTest:
 
         # Тёмно-синяя кнопка
         self.style.configure('StyleDarkBlue.TButton',
-                             font=('Calibri', 16, 'bold'),
+                             font=('Arial', 16, 'bold'),
                              background="#003CC7",
                              borderwidth=0,
                              foreground='white')
@@ -68,7 +68,7 @@ class AppTest:
 
         # Красная кнопка
         self.style.configure('StyleRed.TButton',
-                             font=('Calibri', 14, 'bold'),
+                             font=('Arial', 14, 'bold'),
                              background="#A80000",
                              borderwidth=0,
                              foreground='white')
@@ -77,7 +77,7 @@ class AppTest:
 
         # Серая кнопка
         self.style.configure('StyleGray.TButton',
-                             font=('Calibri', 14, 'bold'),
+                             font=('Arial', 14, 'bold'),
                              background="#4D4D4D",
                              borderwidth=0,
                              foreground='white')
@@ -86,7 +86,7 @@ class AppTest:
 
         # Желтая кнопка
         self.style.configure('StyleYellow.TButton',
-                             font=('Calibri', 14, 'bold'),
+                             font=('Arial', 14, 'bold'),
                              background="#C57000",
                              borderwidth=0,
                              foreground='white')

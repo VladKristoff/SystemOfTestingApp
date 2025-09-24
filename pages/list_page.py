@@ -3,11 +3,12 @@ from tkinter import ttk
 
 
 class ListPage:
-    def __init__(self, parent, app):
+    def __init__(self, parent, app, user_name=None):
         self.parent = parent
         self.app = app
 
         self.selected_test = None
+        self.user_name = user_name
 
         self.create_widgets()
         self.load_tests_list()
@@ -90,7 +91,7 @@ class ListPage:
         """Запуск выбранного теста"""
         if self.selected_test:
             from pages.test_page import TestPage  # Импортируем страницу теста
-            self.app.show_page(TestPage, test_name=self.selected_test)
+            self.app.show_page(TestPage, test_name=self.selected_test, user_name=self.user_name)
         else:
             self.error_label.config(foreground='red')
 
