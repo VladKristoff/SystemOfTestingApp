@@ -73,10 +73,19 @@ class ListPage:
     # Загрузка списка тестов
     def load_tests_list(self):
         available_tests = self.app.test_manager.get_available_tests()
+        custom_tests = self.app.test_manager.get_custom_tests()
 
         self.tests_listbox.delete(0, END)
+
         for test_name in available_tests:
-            self.tests_listbox.insert(END, test_name)
+            if test_name not in custom_tests:
+                self.tests_listbox.insert(END, test_name)
+
+        if custom_tests:
+            self.tests_listbox.insert(END, "─" * 50)
+
+            for test_name in custom_tests:
+                self.tests_listbox.insert(END, f"★ {test_name}")
 
     def on_test_select(self, event):
         """Выбор теста из списка"""

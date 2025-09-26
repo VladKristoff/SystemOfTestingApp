@@ -1,5 +1,8 @@
+import json
 from tkinter import *
 from tkinter import ttk
+from tkinter import filedialog
+from tkinter import messagebox
 from pages.test_page import TestPage
 from pages.table_page import TablePage
 from pages.list_page import ListPage
@@ -79,7 +82,8 @@ class MainMenu():
         # Кнопка "Загрузить тест"
         self.LoadBtn = ttk.Button(self.frame_for_buttons,
                                   text='Загрузить тест',
-                                  style='StyleDarkBlue.TButton', )
+                                  style='StyleDarkBlue.TButton',
+                                  command=self.load_custom_test)
         self.LoadBtn.grid(row=0, column=1, ipadx=20, ipady=9, padx=15)
 
         # Кнопка "Результаты"
@@ -99,6 +103,67 @@ class MainMenu():
 
     def start_results(self):
         self.app.show_page(TablePage)
+
+    def load_custom_test(self):
+        # Загрузка пользовательского теста
+        try:
+            file_path = filedialog.askopenfilename(
+                title="Выберите файл теста",
+                filetypes=[("JSON files", "*.json"), ("All files", "*.*")]
+            )
+
+            if not file_path:
+                return
+
+            # Читаем и проверяем файл
+            with open(file_path, 'r', encoding='utf-8') as file:
+                test_data = json.load(file)
+
+            # Проверяем структуру теста
+            if self.validate_test(test_data):
+                # Получаем название теста из имени файла или из данных
+                test_name = self.get_test_name(file_path, test_data)
+
+                added_test_name = self.app.test_manager.add_custom_test(test_name, test_data)
+                messagebox.showinfo("Успех", f"Тест {added_test_name} успешно загружен!")
+
+            else:
+                messagebox.showerror("Ошибка", "Неверный формат теста. Проверьте структуру JSON файла.")
+
+        except json.JSONDecodeError:
+            messagebox.showerror("Ошибка", "Ошибка чтения JSON файла. Проверьте формат файла.")
+        except Exception as e:
+            messagebox.showerror("Ошибка", f"Произошла ошибка при загрузке теста: {str(e)}")
+
+    def validate_test(self, test_data):
+        # Проверяем структуру загружаемого теста
+        if not isinstance(test_data, dict):
+            return False
+
+        # Проверка наличия хотя бы одного вопроса
+        has_questions = False
+        for key, value in test_data.items():
+            if key.startswith('question_'):
+                if not all(k in value for k in ['question', 'options', 'correct_answer']):
+                    return False
+                if not isinstance(value['options'], list) or len(value['options']) == 0:
+                    return False
+                if not isinstance(value['correct_answer'], int):
+                    return False
+                has_questions = True
+
+        return has_questions
+
+    def get_test_name(self, file_path, test_data):
+        # Пробуем получить название теста из имени файла
+        if 'test_name' in test_data:
+            return test_data['test_name']
+
+        # Или используем имя файла без расширения
+        import os
+        file_name = os.path.basename(file_path)
+        test_name = os.path.splitext(file_name)[0]
+        return test_name
 
     # Очистка виджетов при закрытии страницы
     def destroy(self):

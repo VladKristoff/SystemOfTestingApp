@@ -217,7 +217,6 @@ async def clear_all_results():
         cursor.execute('DELETE FROM test_info')
         deleted_count = cursor.rowcount
 
-        # Сбрасываем sequence (автоинкремент)
         cursor.execute('ALTER SEQUENCE test_info_id_seq RESTART WITH 1')
 
         conn.commit()
