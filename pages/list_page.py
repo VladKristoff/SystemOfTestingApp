@@ -38,8 +38,8 @@ class ListPage:
         # ListBox для отображения тестов
         self.tests_listbox = Listbox(self.list_frame,
                                      yscrollcommand=self.scrollbar.set,
-                                     font=('Arial', 12),
-                                     selectbackground='#e6f3ff',
+                                     font=('Arial', 14),
+                                     selectbackground='#6e6e6e',
                                      selectmode=SINGLE,
                                      borderwidth=0,
                                      highlightthickness=0)
