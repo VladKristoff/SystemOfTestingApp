@@ -67,7 +67,6 @@ class MainMenu():
         # Создание колонок для выравнивания
         self.frame_for_buttons.grid_columnconfigure(0, weight=1)
         self.frame_for_buttons.grid_columnconfigure(1, weight=1)
-        self.frame_for_buttons.grid_columnconfigure(2, weight=1)
 
         # Кнопка "Начать тест"
         self.StartBtn = ttk.Button(self.frame_for_buttons,
@@ -76,18 +75,12 @@ class MainMenu():
                                    command=self.start_list_page)
         self.StartBtn.grid(row=0, column=0, ipadx=20, ipady=9, padx=15)
 
-        # Кнопка "Загрузить тест"
-        self.LoadBtn = ttk.Button(self.frame_for_buttons,
-                                  text='Загрузить тест',
-                                  style='StyleDarkBlue.TButton', )
-        self.LoadBtn.grid(row=0, column=1, ipadx=20, ipady=9, padx=15)
-
         # Кнопка "Результаты"
         self.ResultsBtn = ttk.Button(self.frame_for_buttons,
                                      text='Результаты',
                                      style='StyleBlue.TButton',
                                      command=self.start_results)
-        self.ResultsBtn.grid(row=0, column=2, ipadx=20, ipady=9, padx=15)
+        self.ResultsBtn.grid(row=0, column=1, ipadx=20, ipady=9, padx=15)
 
     def start_list_page(self):
         self.user_name = self.entry_name.get()
