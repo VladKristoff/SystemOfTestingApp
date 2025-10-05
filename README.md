@@ -1,4 +1,4 @@
-# System Of Testing - Система тестирования знаний
+# System Of Testing - Система тестирования знаний (Версия без кнопки "Загрузить тест")
 
 ![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green.svg)
