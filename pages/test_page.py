@@ -10,8 +10,10 @@ class TestPage:
         self.parent = parent
         self.app = app
         self.test_name = test_name
+
         # Берём данные теста, если есть имя
         self.test_data = self.app.test_manager.get_tests(test_name) if test_name else None
+
         self.user_name = user_name
 
         self.total_questions = len(self.test_data)

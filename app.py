@@ -3,7 +3,6 @@ from tkinter import ttk
 from pages.main_menu import MainMenu
 from test_manager import TestManager
 
-
 class AppTest:
     def __init__(self, root):
         self.root = root
@@ -13,8 +12,6 @@ class AppTest:
 
         self.icon = PhotoImage(file='media/ico.png')
         self.root.iconphoto(True, self.icon)
-
-        self.is_dark_theme = False  # Флаг текущей темы
 
         self.test_manager = TestManager()  # Создаём экземпляр класса TestManager
 

@@ -85,7 +85,7 @@ class ListPage:
             self.tests_listbox.insert(END, "─" * 50)
 
             for test_name in custom_tests:
-                self.tests_listbox.insert(END, f"★ {test_name}")
+                self.tests_listbox.insert(END, f"{test_name}")
 
     def on_test_select(self, event):
         """Выбор теста из списка"""
