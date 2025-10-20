@@ -2,6 +2,12 @@ from tkinter import *
 from tkinter import ttk
 import requests
 from tkinter import messagebox
+import openpyxl
+from openpyxl import Workbook
+from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
+from datetime import datetime
+import os
+from tkinter import filedialog
 
 
 class TablePage:
@@ -40,6 +46,13 @@ class TablePage:
                                   command=self.back_button,
                                   style='StyleGray.TButton')
         self.BackBtn.pack(side='left', anchor='s', padx=30, pady=10, ipady=5)
+
+        # Кнопка экспорта таблицы результатов в Excel
+        self.ExportBtn = ttk.Button(self.parent,
+                                    text='Экспорт результатов в Excel',
+                                    style="StyleGreen.TButton",
+                                    command=self.export_excel)
+        self.ExportBtn.pack(side=LEFT, anchor='s', pady=10, ipady=4)
 
         # Кнопка "Удалить"
         self.DelBtn = ttk.Button(self.parent,
@@ -215,6 +228,94 @@ class TablePage:
                 messagebox.showerror("Ошибка", "Превышено время ожидания сервера")
             except Exception as e:
                 messagebox.showerror("Ошибка", f"Ошибка при очистке: {str(e)}")
+
+    def export_excel(self):
+        """Экспорт результатов в Excel"""
+        try:
+            all_items = self.tree.get_children()
+            if not all_items:
+                messagebox.showwarning("Внимание", "Нет данных для экспорта")
+                return
+
+            file_path = filedialog.asksaveasfilename(
+                defaultextension=".xlsx",
+                filetypes=[("Excel files", "*.xlsx"), ("All files", "*.*")],
+                title="Сохранить результат как"
+            )
+
+            if not file_path:
+                return
+
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "Результаты тестирований"
+
+            # Стили для форматирования
+            header_font = Font(bold=True, size=12, color="FFFFFF")
+            header_fill = PatternFill(start_color="366092", end_color="366092", fill_type="solid")
+            header_alignment = Alignment(horizontal="center", vertical="center")
+            border = Border(
+                left=Side(style='thin'),
+                right=Side(style='thin'),
+                top=Side(style='thin'),
+                bottom=Side(style='thin')
+            )
+
+            # Заголовки столбцов
+            headers = ['ID', 'Пользователь', 'Тест', 'Всего вопросов', 'Правильно', 'Процент', 'Время']
+            for col, header in enumerate(headers, 1):
+                cell = ws.cell(row=1, column=col, value=header)
+                cell.font = header_font
+                cell.fill = header_fill
+                cell.alignment = header_alignment
+                cell.border = border
+
+                # Заполняем данными
+                row_num = 2
+                for item in all_items:
+                    item_values = self.tree.item(item)['values']
+
+                    # Пропускаем строки с сообщениями об ошибках или отсутствии данных
+                    if not item_values:
+                        continue
+
+                    for col, value in enumerate(item_values, 1):
+                        cell = ws.cell(row=row_num, column=col, value=value)
+                        cell.border = border
+                        if col in [1, 2]:  # Выравнивание по левому краю для текстовых полей
+                            cell.alignment = Alignment(horizontal="left", vertical="center")
+                        else:
+                            cell.alignment = Alignment(horizontal="center", vertical="center")
+
+                    row_num += 1
+
+                    # Автоматическая ширина столбцов
+                    for column in ws.columns:
+                        max_length = 0
+                        column_letter = column[0].column_letter
+                        for cell in column:
+                            try:
+                                if len(str(cell.value)) > max_length:
+                                    max_length = len(str(cell.value))
+                            except:
+                                pass
+                        adjusted_width = (max_length + 2)
+                        ws.column_dimensions[column_letter].width = adjusted_width
+
+                    # Добавляем информацию о дате экспорта
+                    ws.cell(row=row_num + 1, column=1, value="Дата экспорта:").font = Font(bold=True)
+                    ws.cell(row=row_num + 1, column=2, value=datetime.now().strftime("%d.%m.%Y %H:%M"))
+
+                    ws.cell(row=row_num + 2, column=1, value="Всего записей:").font = Font(bold=True)
+                    ws.cell(row=row_num + 2, column=2, value=row_num - 2)
+
+            # Сохраняем файл
+            wb.save(file_path)
+
+            messagebox.showinfo("Успех", f"Данные успешно экспортированы в файл:\n{file_path}")
+
+        except Exception as e:
+            messagebox.showerror("Ошибка", f"Произошла ошибка при экспорте в Excel:\n{str(e)}")
 
     # Функция возвращения на экран главного меню
     def back_button(self):

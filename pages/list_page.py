@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import ttk
+from tkinter import ttk, messagebox
 
 
 class ListPage:
@@ -55,6 +55,13 @@ class ListPage:
                                   command=self.back_button)
         self.BackBtn.pack(side=LEFT, padx=30, pady=10, ipady=5)
 
+        # Кнопка удаления теста
+        self.DelBtn = ttk.Button(self.parent,
+                                 text="Удалить тест",
+                                 style='StyleRed.TButton',
+                                 command=self.delete_test)
+        self.DelBtn.pack(side=LEFT, pady=10, ipady=5)
+
         # Кнопка "Начать тест"
         self.StartBtn = ttk.Button(self.parent,
                                    text="Начать тест",
@@ -92,9 +99,15 @@ class ListPage:
         selection = self.tests_listbox.curselection()
         if selection:
             self.selected_test = self.tests_listbox.get(selection[0])
+
+            is_custom = self.selected_test in self.app.test_manager.get_custom_tests()
+
             self.StartBtn.config(state='normal')
+
+            self.DelBtn.config(state='normal' if is_custom else 'disable')
         else:
             self.StartBtn.config(state='disable')
+            self.DelBtn.config(state='disable')
 
     def start_test(self):
         """Запуск выбранного теста"""
@@ -103,6 +116,31 @@ class ListPage:
             self.app.show_page(TestPage, test_name=self.selected_test, user_name=self.user_name)
         else:
             self.error_label.config(foreground='red')
+
+    def delete_test(self):
+        if not self.selected_test:
+            self.error_label.config(foreground='red')
+            return
+
+        if self.selected_test not in self.app.test_manager.get_custom_tests():
+            messagebox.showwarning("Внимание", "Можно удалять только пользовательские тесты")
+            return
+
+        result = messagebox.askyesno(
+            "Подтверждение удаления",
+            f"Вы уверены, что хотите удалить тест {self.selected_test}"
+        )
+
+        if result:
+            success = self.app.test_manager.remove_custom_test(self.selected_test)
+            if success:
+                messagebox.showinfo("Успех", f"Тест '{self.selected_test}' успешно удален")
+                self.selected_test = None
+                self.load_tests_list()
+                self.StartBtn.config(state='disable')
+                self.DelBtn.config(state='disable')
+            else:
+                messagebox.showerror("Ошибка", "Не удалось удалить тест")
 
     # Функция возвращения на экран главного меню
     def back_button(self):
