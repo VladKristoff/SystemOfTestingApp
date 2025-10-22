@@ -2,11 +2,9 @@ from tkinter import *
 from tkinter import ttk
 import requests
 from tkinter import messagebox
-import openpyxl
 from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 from datetime import datetime
-import os
 from tkinter import filedialog
 
 
@@ -302,12 +300,12 @@ class TablePage:
                         adjusted_width = (max_length + 2)
                         ws.column_dimensions[column_letter].width = adjusted_width
 
-                    # Добавляем информацию о дате экспорта
-                    ws.cell(row=row_num + 1, column=1, value="Дата экспорта:").font = Font(bold=True)
-                    ws.cell(row=row_num + 1, column=2, value=datetime.now().strftime("%d.%m.%Y %H:%M"))
+                # Добавляем информацию о дате экспорта
+                ws.cell(row=row_num + 1, column=1, value="Дата экспорта:").font = Font(bold=True)
+                ws.cell(row=row_num + 1, column=2, value=datetime.now().strftime("%d.%m.%Y %H:%M"))
 
-                    ws.cell(row=row_num + 2, column=1, value="Всего записей:").font = Font(bold=True)
-                    ws.cell(row=row_num + 2, column=2, value=row_num - 2)
+                ws.cell(row=row_num + 2, column=1, value="Всего записей:").font = Font(bold=True)
+                ws.cell(row=row_num + 2, column=2, value=row_num - 2)
 
             # Сохраняем файл
             wb.save(file_path)
