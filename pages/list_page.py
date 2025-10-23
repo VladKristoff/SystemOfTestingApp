@@ -112,6 +112,9 @@ class ListPage:
     def start_test(self):
         """Запуск выбранного теста"""
         if self.selected_test:
+            if self.selected_test == "─" * 50:  # Проверка, что выбранный тест, это не полоса разделения
+                self.error_label.config(foreground='red')
+                return
             from pages.test_page import TestPage  # Импортируем страницу теста
             self.app.show_page(TestPage, test_name=self.selected_test, user_name=self.user_name)
         else:

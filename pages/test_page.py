@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-from tests.tests1 import test1
+from tkinter import messagebox
 from pages.result_page import ResultPage
 
 
@@ -143,8 +143,7 @@ class TestPage:
         self.timer_running = False
         self.time_complete = self.total_seconds - self.seconds
         correct_answers = self.count_true_answers()
-        total_questions = self.total_questions
-        self.app.show_page(ResultPage, 
+        self.app.show_page(ResultPage,
                            time_complete=self.time_complete,
                            correct_answers=correct_answers,
                            total_questions=self.total_questions,
@@ -154,9 +153,15 @@ class TestPage:
 
     # Функция для возврата в главное меню
     def back_button(self):
-        self.timer_running = False
-        from pages.list_page import ListPage
-        self.app.show_page(ListPage)
+        # Окно подтверждения
+        answer = messagebox.askyesno("Подтверждение выхода?",
+                                     "Вы уверены, что хотите завершить тест?\nВесь прогресс  будет потерян")
+        if answer:
+            self.timer_running = False
+            from pages.list_page import ListPage
+            self.app.show_page(ListPage)
+        if not answer:
+            return
 
     # Форматирование времени
     def format_time(self):
@@ -176,8 +181,8 @@ class TestPage:
                 return
         else:
             try:
-                self.label_timer.config(text='Время истекло')
                 self.time_complete = self.total_seconds - self.seconds
+                self.finish_test()
                 print(f"Прошедшее время: {self.time_complete} секунд")  # Для отладки
             except TclError:
                 return

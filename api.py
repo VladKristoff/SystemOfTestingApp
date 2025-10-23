@@ -8,16 +8,6 @@ import uvicorn
 
 app = FastAPI(title='Result TestAPI', version='1.0.0')
 
-# Настройки CORS для разрешения запросов из Tkinter приложения
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Разрешаем все origins для простоты
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
 # Модели Pydantic
 class TestResultItem(BaseModel):
     id: int
@@ -70,7 +60,7 @@ def get_db_connection():
             user='postgres',
             password='1234',
             host='localhost',
-            port='5432'
+            port='5433'
         )
         return conn
     except psycopg2.Error as e:

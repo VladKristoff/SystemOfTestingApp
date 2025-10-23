@@ -29,12 +29,20 @@ class TablePage:
                                            style='Label.TLabel')
         self.label_YourResults.pack(side='left', padx=30, pady=10)
 
+        # Надпись "Выберите строку для удаления"
+        self.LableError = ttk.Label(self.top_frame,
+                                    text="Выберите строку для удаления",
+                                    font=('Calibri', 10, 'bold'),
+                                    foreground='white',
+                                    style='Label.TLabel')
+        self.LableError.pack(side=RIGHT, padx=30, pady=10)
+
         # Фрейм для таблицы
         self.table_frame = Frame(self.parent,
                                  background='white',
                                  relief=SOLID,
                                  borderwidth=2)
-        self.table_frame.pack(fill='both', expand=TRUE, padx=30, pady=30)
+        self.table_frame.pack(fill='both', expand=TRUE, padx=30, pady=20)
 
         self.create_table()
 
@@ -156,7 +164,7 @@ class TablePage:
     def delete_selected(self):
         """Удаление выбранных записей"""
         if not self.selected_items:
-            messagebox.showwarning("Внимание", "Выберите записи для удаления")
+            self.LableError.config(foreground='red')
             return
 
         result = messagebox.askyesno("Подтверждение", "Удалить выбранные записи?")
@@ -189,6 +197,7 @@ class TablePage:
                     result_data = response.json()
                     self.load_test_results()
                     messagebox.showinfo("Успех", f"Удалено записей: {result_data.get('deleted_count', 0)}")
+                    self.LableError.config(foreground='white')
                 else:
                     error_detail = response.json().get('detail', 'Unknown error')
                     messagebox.showerror("Ошибка", f"Ошибка сервера: {error_detail}")

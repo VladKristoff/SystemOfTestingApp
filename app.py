@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import ttk
-from pages.main_menu import MainMenu
 from test_manager import TestManager
 
 class AppTest:
